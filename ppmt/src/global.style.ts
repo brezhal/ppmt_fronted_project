@@ -11,6 +11,19 @@ const useStyles = createStyles(() => {
     'ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed': {
       left: 'unset',
     },
+    // Header 图标圆角样式
+    '.ant-pro-global-header-logo': {
+      borderRadius: '8px !important',
+      overflow: 'hidden',
+    },
+    '.ant-pro-global-header-logo img': {
+      borderRadius: '8px !important',
+    },
+    '.ant-pro-global-header-logo .ant-pro-global-header-logo-link': {
+      borderRadius: '8px !important',
+      overflow: 'hidden',
+      display: 'block',
+    },
     canvas: {
       display: 'block',
     },

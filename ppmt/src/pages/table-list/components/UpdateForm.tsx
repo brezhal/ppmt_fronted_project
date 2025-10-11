@@ -9,20 +9,20 @@ import {
 import { FormattedMessage, useIntl, useRequest } from '@umijs/max';
 import { Modal, message } from 'antd';
 import React, { cloneElement, useCallback, useState } from 'react';
-import { updateRule } from '@/services/ant-design-pro/api';
-
 export type FormValueType = {
-  target?: string;
-  template?: string;
-  type?: string;
-  time?: string;
-  frequency?: string;
-} & Partial<API.RuleListItem>;
+  orderNo?: string;
+  customerName?: string;
+  customerPhone?: string;
+  amount?: number;
+  status?: string;
+  address?: string;
+  description?: string;
+} & Partial<API.OrderListItem>;
 
 export type UpdateFormProps = {
   trigger?: React.ReactElement<any>;
   onOk?: () => void;
-  values: Partial<API.RuleListItem>;
+  values: Partial<API.OrderListItem>;
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
@@ -34,14 +34,18 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const { run } = useRequest(updateRule, {
+  const { run } = useRequest(async (data: any) => {
+    // 这里可以调用更新订单的API
+    console.log('更新订单数据:', data);
+    return Promise.resolve();
+  }, {
     manual: true,
     onSuccess: () => {
-      messageApi.success('Configuration is successful');
+      messageApi.success('订单更新成功');
       onOk?.();
     },
     onError: () => {
-      messageApi.error('Configuration failed, please try again!');
+      messageApi.error('订单更新失败，请重试！');
     },
   });
 
@@ -84,10 +88,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
                 },
               }}
               destroyOnHidden
-              title={intl.formatMessage({
-                id: 'pages.searchTable.updateForm.ruleConfig',
-                defaultMessage: '规则配置',
-              })}
+              title="订单编辑"
               open={open}
               footer={submitter}
               onCancel={onCancel}
@@ -100,147 +101,47 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       >
         <StepsForm.StepForm
           initialValues={values}
-          title={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.basicConfig',
-            defaultMessage: '基本信息',
-          })}
+          title="基本信息"
         >
           <ProFormText
-            name="name"
-            label={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.ruleName.nameLabel',
-              defaultMessage: '规则名称',
-            })}
+            name="orderNo"
+            label="订单号"
+            width="md"
+            disabled
+          />
+          <ProFormText
+            name="customerName"
+            label="客户姓名"
             width="md"
             rules={[
               {
                 required: true,
-                message: (
-                  <FormattedMessage
-                    id="pages.searchTable.updateForm.ruleName.nameRules"
-                    defaultMessage="请输入规则名称！"
-                  />
-                ),
+                message: '请输入客户姓名！',
               },
             ]}
           />
-          <ProFormTextArea
-            name="desc"
+          <ProFormText
+            name="customerPhone"
+            label="客户电话"
             width="md"
-            label={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.ruleDesc.descLabel',
-              defaultMessage: '规则描述',
-            })}
-            placeholder={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.ruleDesc.descPlaceholder',
-              defaultMessage: '请输入至少五个字符',
-            })}
             rules={[
               {
                 required: true,
-                message: (
-                  <FormattedMessage
-                    id="pages.searchTable.updateForm.ruleDesc.descRules"
-                    defaultMessage="请输入至少五个字符的规则描述！"
-                  />
-                ),
-                min: 5,
+                message: '请输入客户电话！',
               },
             ]}
           />
-        </StepsForm.StepForm>
-        <StepsForm.StepForm
-          initialValues={{
-            target: '0',
-            template: '0',
-          }}
-          title={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.ruleProps.title',
-            defaultMessage: '配置规则属性',
-          })}
-        >
-          <ProFormSelect
-            name="target"
+          <ProFormText
+            name="amount"
+            label="订单金额"
             width="md"
-            label={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.object',
-              defaultMessage: '监控对象',
-            })}
-            valueEnum={{
-              0: '表一',
-              1: '表二',
-            }}
-          />
-          <ProFormSelect
-            name="template"
-            width="md"
-            label={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.ruleProps.templateLabel',
-              defaultMessage: '规则模板',
-            })}
-            valueEnum={{
-              0: '规则模板一',
-              1: '规则模板二',
-            }}
-          />
-          <ProFormRadio.Group
-            name="type"
-            label={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.ruleProps.typeLabel',
-              defaultMessage: '规则类型',
-            })}
-            options={[
-              {
-                value: '0',
-                label: '强',
-              },
-              {
-                value: '1',
-                label: '弱',
-              },
-            ]}
-          />
-        </StepsForm.StepForm>
-        <StepsForm.StepForm
-          initialValues={{
-            type: '1',
-            frequency: 'month',
-          }}
-          title={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.schedulingPeriod.title',
-            defaultMessage: '设定调度周期',
-          })}
-        >
-          <ProFormDateTimePicker
-            name="time"
-            width="md"
-            label={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.schedulingPeriod.timeLabel',
-              defaultMessage: '开始时间',
-            })}
+            valueType="money"
             rules={[
               {
                 required: true,
-                message: (
-                  <FormattedMessage
-                    id="pages.searchTable.updateForm.schedulingPeriod.timeRules"
-                    defaultMessage="请选择开始时间！"
-                  />
-                ),
+                message: '请输入订单金额！',
               },
             ]}
-          />
-          <ProFormSelect
-            name="frequency"
-            label={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.object',
-              defaultMessage: '监控对象',
-            })}
-            width="md"
-            valueEnum={{
-              month: '月',
-              week: '周',
-            }}
           />
         </StepsForm.StepForm>
       </StepsForm>

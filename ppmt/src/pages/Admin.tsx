@@ -15,11 +15,7 @@ const Admin: React.FC = () => {
     >
       <Card>
         <Alert
-          message={intl.formatMessage({
-            id: 'pages.welcome.alertMessage',
-            defaultMessage:
-              'Faster and stronger heavy-duty components have been released.',
-          })}
+          message="Ant Design Pro 组件已发布"
           type="success"
           showIcon
           banner

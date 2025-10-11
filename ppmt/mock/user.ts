@@ -8,10 +8,6 @@ const waitTime = (time: number = 100) => {
   });
 };
 
-async function getFakeCaptcha(_req: Request, res: Response) {
-  await waitTime(2000);
-  return res.json('captcha-xxx');
-}
 
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
 
@@ -119,51 +115,6 @@ export default {
       address: 'Sidney No. 1 Lake Park',
     },
   ],
-  'POST /api/login/account': async (req: Request, res: Response) => {
-    const { password, username, type } = req.body;
-    await waitTime(2000);
-    if (password === 'ant.design' && username === 'admin') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
-      });
-      access = 'admin';
-      return;
-    }
-    if (password === 'ant.design' && username === 'user') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
-      });
-      access = 'user';
-      return;
-    }
-    if (type === 'mobile') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
-      });
-      access = 'admin';
-      return;
-    }
-
-    res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
-    });
-    access = 'guest';
-  },
-  'POST /api/login/outLogin': (_req: Request, res: Response) => {
-    access = '';
-    res.send({ data: {}, success: true });
-  },
-  'POST /api/register': (_req: Request, res: Response) => {
-    res.send({ status: 'ok', currentAuthority: 'user', success: true });
-  },
   'GET /api/500': (_req: Request, res: Response) => {
     res.status(500).send({
       timestamp: 1513932555104,
@@ -201,5 +152,4 @@ export default {
     });
   },
 
-  'GET  /api/login/captcha': getFakeCaptcha,
 };
