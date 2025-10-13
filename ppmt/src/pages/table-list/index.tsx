@@ -40,6 +40,7 @@ const TableList: React.FC = () => {
               setCurrentRow(entity);
               setShowDetail(true);
             }}
+            style={{ cursor: "pointer" }}
           >
             {dom}
           </a>
@@ -219,19 +220,20 @@ const TableList: React.FC = () => {
         columns={columns}
       />
 
-      <Drawer
-        width={600}
+      {/* 订单详情弹框 */}
+      <Modal
+        title={`订单详情 - ID: ${currentRow?.id || ''}`}
         open={showDetail}
-        onClose={() => {
+        onCancel={() => {
           setCurrentRow(undefined);
           setShowDetail(false);
         }}
-        closable={false}
+        footer={null}
+        width={800}
       >
         {currentRow?.id && (
           <ProDescriptions<API.OrderListItem>
             column={2}
-            title={`订单详情 - ID: ${currentRow?.id}`}
             request={async () => ({
               data: currentRow || {},
             })}
@@ -243,7 +245,7 @@ const TableList: React.FC = () => {
             }
           />
         )}
-      </Drawer>
+      </Modal>
 
       {/* 配置详情弹框 */}
       <Modal
