@@ -6,8 +6,6 @@ import { history, Link } from '@umijs/max';
 import React from 'react';
 import {
   Footer,
-  Question,
-  SelectLang,
 } from '@/components';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
@@ -37,10 +35,7 @@ export const layout: RunTimeLayoutConfig = ({
     collapsed: true,
     // 设置侧边栏默认收起
     siderMenuType: 'sub',
-    actionsRender: () => [
-      <Question key="doc" />,
-      <SelectLang key="SelectLang" />,
-    ],
+    actionsRender: () => [],
     footerRender: () => <Footer />,
     onPageChange: () => {
       // 移除登录检查逻辑
@@ -108,15 +103,15 @@ export const layout: RunTimeLayoutConfig = ({
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request: RequestConfig = {
-  baseURL: isDev ? '' : 'https://proapi.azurewebsites.net',
-  // 开发环境使用代理，生产环境直接请求
+  baseURL: isDev ? '' : '', // 生产环境也使用相对路径，通过Nginx代理
+  // 开发环境使用代理，生产环境通过Nginx代理
   ...errorConfig,
   // 添加请求拦截器处理跨域
   requestInterceptors: [
     (config: any) => {
-      // 在开发环境下，如果是订单API请求，使用代理路径
-      if (isDev && config.url?.includes('/api/orders/')) {
-        // 代理已经配置，直接使用相对路径
+      // 订单API请求使用相对路径，通过Nginx代理
+      if (config.url?.includes('/api/orders/')) {
+        // 使用相对路径，Nginx会代理到后端
         return config;
       }
       return config;

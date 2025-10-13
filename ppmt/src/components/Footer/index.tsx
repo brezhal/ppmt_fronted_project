@@ -8,27 +8,13 @@ const Footer: React.FC = () => {
       style={{
         background: 'none',
       }}
-      copyright="Powered by Ant Desgin"
-      links={[
-        {
-          key: 'Ant Design Pro',
-          title: 'Ant Design Pro',
-          href: 'https://pro.ant.design',
-          blankTarget: true,
-        },
-        {
-          key: 'github',
-          title: <GithubOutlined />,
-          href: 'https://github.com/ant-design/ant-design-pro',
-          blankTarget: true,
-        },
-        {
-          key: 'Ant Design',
-          title: 'Ant Design',
-          href: 'https://ant.design',
-          blankTarget: true,
-        },
-      ]}
+      copyright="辅助新人群 qq+1053502785"
+      links={[{
+        key: 'name',
+        title: '点击使用软件-ppmt辅助超线程',
+        href: 'https://hamibot.com/marketplace/PtzU1',
+        blankTarget: true,
+      }]}
     />
   );
 };

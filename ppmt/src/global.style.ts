@@ -19,11 +19,19 @@ const useStyles = createStyles(() => {
     '.ant-pro-global-header-logo img': {
       borderRadius: '8px !important',
     },
-    '.ant-pro-global-header-logo .ant-pro-global-header-logo-link': {
-      borderRadius: '8px !important',
-      overflow: 'hidden',
-      display: 'block',
-    },
+        '.ant-pro-global-header-logo .ant-pro-global-header-logo-link': {
+          borderRadius: '8px !important',
+          overflow: 'hidden',
+          display: 'block',
+        },
+        // 移动端去除页面容器边距
+        '@media (max-width: 768px)': {
+          '.ant-pro-page-container-children-container': {
+            paddingBlockStart: '0 !important',
+            paddingBlockEnd: '0 !important',
+            paddingInline: '0 !important',
+          },
+        },
     canvas: {
       display: 'block',
     },

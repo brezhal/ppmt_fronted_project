@@ -78,6 +78,15 @@ body,
   display: block;
 }
 
+/* 移动端去除页面容器边距 */
+@media (max-width: 768px) {
+  .ant-pro-page-container-children-container {
+    padding-block-start: 0 !important;
+    padding-block-end: 0 !important;
+    padding-inline: 0 !important;
+  }
+}
+
 canvas {
   display: block;
 }

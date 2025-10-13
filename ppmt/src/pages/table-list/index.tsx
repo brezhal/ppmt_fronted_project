@@ -1,24 +1,25 @@
+import { getOrdersList } from "@/services/orders/api";
 import type {
   ActionType,
   ProColumns,
   ProDescriptionsItemProps,
-} from '@ant-design/pro-components';
+} from "@ant-design/pro-components";
 import {
   PageContainer,
-  PageHeader,
   ProDescriptions,
   ProTable,
-} from '@ant-design/pro-components';
-import { FormattedMessage, useIntl } from '@umijs/max';
-import { Drawer } from 'antd';
-import React, { useRef, useState } from 'react';
-import { getOrdersList } from '@/services/orders/api';
+} from "@ant-design/pro-components";
+import { useIntl } from "@umijs/max";
+import { Drawer, Modal } from "antd";
+import React, { useRef, useState } from "react";
 
 const TableList: React.FC = () => {
   const actionRef = useRef<ActionType | null>(null);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.OrderListItem>();
+  const [showConfigDetail, setShowConfigDetail] = useState<boolean>(false);
+  const [configData, setConfigData] = useState<any>(null);
 
   /**
    * @en-US International configuration
@@ -29,8 +30,8 @@ const TableList: React.FC = () => {
   // 表格显示的列定义
   const columns: ProColumns<API.OrderListItem>[] = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: "ID",
+      dataIndex: "id",
       hideInSearch: true, // 隐藏搜索
       render: (dom, entity) => {
         return (
@@ -46,100 +47,87 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '商品名称',
-      dataIndex: ['parsedData', 'name'],
+      title: "商品名称",
+      dataIndex: ["parsedData", "name"],
       hideInSearch: true, // 隐藏搜索
-      render: (_, record) => record.parsedData?.name || '-',
+      render: (_, record) => record.parsedData?.name || "-",
     },
     {
-      title: '价格',
-      dataIndex: ['parsedData', 'price'],
+      title: "价格",
+      dataIndex: ["parsedData", "price"],
       hideInSearch: true, // 隐藏搜索
-      render: (_, record) => record.parsedData?.price || '-',
+      render: (_, record) => record.parsedData?.price || "-",
     },
     {
-      title: '数量',
-      dataIndex: ['parsedData', 'count'],
+      title: "数量",
+      dataIndex: ["parsedData", "count"],
       hideInSearch: true, // 隐藏搜索
-      render: (_, record) => record.parsedData?.count || '-',
+      render: (_, record) => record.parsedData?.count || "-",
     },
     {
-      title: '类型',
-      dataIndex: ['parsedData', 'type'],
+      title: "类型",
+      dataIndex: ["parsedData", "type"],
       hideInSearch: true, // 隐藏搜索
-      render: (_, record) => record.parsedData?.type || '-',
+      render: (_, record) => record.parsedData?.type || "-",
     },
     {
-      title: '品牌',
-      dataIndex: ['parsedData', 'brand'],
+      title: "品牌",
+      dataIndex: ["parsedData", "brand"],
       hideInSearch: true, // 隐藏搜索
-      render: (_, record) => record.parsedData?.brand || '-',
+      render: (_, record) => record.parsedData?.brand || "-",
     },
     {
-      title: '配置',
-      dataIndex: ['parsedData', 'config'],
+      title: "配置",
+      dataIndex: ["parsedData", "config"],
       hideInSearch: true, // 隐藏搜索
       render: (_, record) => {
         const config = record.parsedData?.config;
-        if (!config) return '-';
-        
-        // 如果是对象，只显示数值部分
-        if (typeof config === 'object') {
-          const values = Object.values(config).join(', ');
-          return (
-            <div style={{ 
-              whiteSpace: 'pre-wrap', 
-              wordBreak: 'break-all',
-              maxWidth: '300px'
-            }}>
-              {values}
-            </div>
-          );
-        }
-        
-        // 如果是字符串，直接显示
+        if (!config) return "-";
+
         return (
-          <div style={{ 
-            whiteSpace: 'pre-wrap', 
-            wordBreak: 'break-all',
-            maxWidth: '300px'
-          }}>
-            {config}
-          </div>
+          <a
+            onClick={() => {
+              setConfigData(config);
+              setShowConfigDetail(true);
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            查看配置
+          </a>
         );
       },
     },
     {
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
+      title: "创建时间",
+      dataIndex: "createdAt",
+      valueType: "dateTime",
       sorter: true,
       hideInSearch: true, // 不在搜索表单中显示
     },
     {
-      title: '商品名称',
-      dataIndex: 'name',
+      title: "商品名称",
+      dataIndex: "name",
       hideInTable: true, // 不在表格中显示，只在搜索中使用
       formItemProps: {
-        label: '商品名称',
+        label: "商品名称",
       },
     },
     {
-      title: '开始日期',
-      dataIndex: 'startDate',
-      valueType: 'date',
+      title: "开始日期",
+      dataIndex: "startDate",
+      valueType: "date",
       hideInTable: true, // 不在表格中显示，只在搜索中使用
       formItemProps: {
-        label: '开始日期',
+        label: "开始日期",
       },
     },
     {
-      title: '结束日期',
-      dataIndex: 'endDate',
-      valueType: 'date',
+      title: "结束日期",
+      dataIndex: "endDate",
+      valueType: "date",
       hideInTable: true, // 不在表格中显示，只在搜索中使用
       formItemProps: {
-        label: '结束日期',
+        label: "结束日期",
       },
     },
   ];
@@ -147,61 +135,63 @@ const TableList: React.FC = () => {
   // 弹框显示的列定义（不包含搜索字段）
   const drawerColumns: ProColumns<API.OrderListItem>[] = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: "ID",
+      dataIndex: "id",
     },
     {
-      title: '商品名称',
-      dataIndex: ['parsedData', 'name'],
-      render: (_, record) => record.parsedData?.name || '-',
+      title: "商品名称",
+      dataIndex: ["parsedData", "name"],
+      render: (_, record) => record.parsedData?.name || "-",
     },
     {
-      title: '价格',
-      dataIndex: ['parsedData', 'price'],
-      render: (_, record) => record.parsedData?.price || '-',
+      title: "价格",
+      dataIndex: ["parsedData", "price"],
+      render: (_, record) => record.parsedData?.price || "-",
     },
     {
-      title: '数量',
-      dataIndex: ['parsedData', 'count'],
-      render: (_, record) => record.parsedData?.count || '-',
+      title: "数量",
+      dataIndex: ["parsedData", "count"],
+      render: (_, record) => record.parsedData?.count || "-",
     },
     {
-      title: '类型',
-      dataIndex: ['parsedData', 'type'],
-      render: (_, record) => record.parsedData?.type || '-',
+      title: "类型",
+      dataIndex: ["parsedData", "type"],
+      render: (_, record) => record.parsedData?.type || "-",
     },
     {
-      title: '品牌',
-      dataIndex: ['parsedData', 'brand'],
-      render: (_, record) => record.parsedData?.brand || '-',
+      title: "品牌",
+      dataIndex: ["parsedData", "brand"],
+      render: (_, record) => record.parsedData?.brand || "-",
     },
     {
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
+      title: "创建时间",
+      dataIndex: "createdAt",
+      valueType: "dateTime",
     },
     {
-      title: '配置',
-      dataIndex: ['parsedData', 'config'],
+      title: "配置",
+      dataIndex: ["parsedData", "config"],
       render: (_, record) => {
         const config = record.parsedData?.config;
-        if (!config) return '-';
-        
+        if (!config) return "-";
+
         // 如果是对象，只显示数值部分
-        if (typeof config === 'object') {
-          const values = Object.values(config).join(', ');
+        if (typeof config === "object") {
+          const values = Object.values(config).join(", ");
           return (
-            <div style={{ 
-              whiteSpace: 'pre-wrap', 
-              wordBreak: 'break-all',
-              maxHeight: '200px',
-              overflow: 'auto'
-            }}>
+            <div
+              style={{
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-all",
+                maxHeight: "200px",
+                overflow: "auto",
+              }}
+            >
               {values}
             </div>
           );
         }
-        
+
         // 如果是字符串，直接显示
         return config;
       },
@@ -210,7 +200,9 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <PageHeader title="数据仅供参考，有些统计不到，-的数据表示买到，但没统计到名称。2025-9-27日之后的数据大部分是正常的，之前的因统计问题丢失了" />
+      <div style={{ marginBottom: "16px", paddingLeft: "16px", paddingRight: "16px" }}>
+        数据仅供参考，有些统计不到，-的数据表示买到，但没统计到名称。2025-9-27日之后的数据大部分是正常的，之前的因统计问题丢失了
+      </div>
       <ProTable<API.OrderListItem, API.PageParams>
         headerTitle="订单列表"
         actionRef={actionRef}
@@ -246,10 +238,41 @@ const TableList: React.FC = () => {
             params={{
               id: currentRow?.id,
             }}
-            columns={drawerColumns as ProDescriptionsItemProps<API.OrderListItem>[]}
+            columns={
+              drawerColumns as ProDescriptionsItemProps<API.OrderListItem>[]
+            }
           />
         )}
       </Drawer>
+
+      {/* 配置详情弹框 */}
+      <Modal
+        title="配置详情"
+        open={showConfigDetail}
+        onCancel={() => {
+          setShowConfigDetail(false);
+          setConfigData(null);
+        }}
+        footer={null}
+        width={800}
+      >
+        {configData && (
+          <div style={{ maxHeight: "500px", overflow: "auto" }}>
+            <div
+              style={{
+                fontSize: "12px",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-all",
+                lineHeight: "1.5",
+              }}
+            >
+              {typeof configData === "object"
+                ? Object.values(configData).join("\n")
+                : configData}
+            </div>
+          </div>
+        )}
+      </Modal>
     </PageContainer>
   );
 };

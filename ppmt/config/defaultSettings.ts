@@ -17,7 +17,7 @@ const Settings: ProLayoutProps & {
   colorWeak: false,
   title: '超线程',
   pwa: true,
-  logo: 'http://image.brezhal.xin/uploads/ccx.png',
+  logo: '/icons/ccx.png',
   iconfontUrl: '',
   // 设置侧边栏默认折叠
   collapsed: true,
