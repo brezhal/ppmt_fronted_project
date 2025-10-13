@@ -20,6 +20,13 @@ export default {
       logLevel: 'debug',
       secure: false, // 忽略SSL证书验证
     },
+    '/api/orders/grab-list-search': {
+      target: 'http://api.brezhal.xin',
+      changeOrigin: true,
+      pathRewrite: { '^/api/orders': '/orders' },
+      logLevel: 'debug',
+      secure: false, // 忽略SSL证书验证
+    },
     '/api/orders/delete': {
       target: 'http://api.brezhal.xin',
       changeOrigin: true,

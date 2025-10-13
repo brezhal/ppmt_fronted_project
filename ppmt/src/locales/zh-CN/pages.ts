@@ -33,7 +33,7 @@ export default {
   'pages.searchTable.titleOption': '操作',
   'pages.searchTable.config': '配置',
   'pages.searchTable.subscribeAlert': '订阅警报',
-  'pages.searchTable.title': '数据仅供参考，有些统计不到',
+  'pages.searchTable.title': '订单列表',
   'pages.searchTable.new': '新建',
   'pages.searchTable.chosen': '已选择',
   'pages.searchTable.item': '项',

@@ -1,8 +1,9 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from '@umijs/max';
+import { decryptOrdersList } from '@/utils/decrypt';
 
-/** 获取订单列表 GET /api/orders/grab-list */
+/** 获取订单列表 POST /api/orders/grab-list-search */
 export async function getOrdersList(
   params: {
     // query
@@ -10,10 +11,12 @@ export async function getOrdersList(
     current?: number;
     /** 页面的容量 */
     pageSize?: number;
-    /** 订单状态 */
-    status?: string;
-    /** 订单号 */
-    orderNo?: string;
+    /** 商品名称 */
+    name?: string;
+    /** 开始日期 */
+    startDate?: string;
+    /** 结束日期 */
+    endDate?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -21,31 +24,24 @@ export async function getOrdersList(
   const limit = params.pageSize || 10;
   const page = params.current || 1; // page直接使用页码
   
-  const response = await request<API.OrderList>('/api/orders/grab-list', {
-    method: 'GET',
-    params: {
+  const response = await request<API.OrderList>('/api/orders/grab-list-search', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: {
       limit: parseInt(limit.toString()),
       page: parseInt(page.toString()),
-      status: params.status,
-      orderNo: params.orderNo,
+      name: params.name,
+      startDate: params.startDate,
+      endDate: params.endDate,
     },
     ...(options || {}),
   });
 
-  // 处理数据格式，解析JSON字符串
+  // 处理数据格式，解密并解析数据
   if (response?.data?.list) {
-    response.data.list = response.data.list.map(item => {
-      let parsedData = {};
-      try {
-        parsedData = JSON.parse(item.data || '{}');
-      } catch (e) {
-        console.warn('Failed to parse order data:', item.data);
-      }
-      return {
-        ...item,
-        parsedData,
-      };
-    });
+    response.data.list = decryptOrdersList(response.data.list);
   }
 
   // 转换为ProTable期望的格式
