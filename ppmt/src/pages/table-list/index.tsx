@@ -65,12 +65,12 @@ const TableList: React.FC = () => {
       hideInSearch: true, // 隐藏搜索
       render: (_, record) => record.parsedData?.count || "-",
     },
-    {
-      title: "类型",
-      dataIndex: ["parsedData", "type"],
-      hideInSearch: true, // 隐藏搜索
-      render: (_, record) => record.parsedData?.type || "-",
-    },
+    // {
+    //   title: "类型",
+    //   dataIndex: ["parsedData", "type"],
+    //   hideInSearch: true, // 隐藏搜索
+    //   render: (_, record) => record.parsedData?.type || "-",
+    // },
     {
       title: "品牌",
       dataIndex: ["parsedData", "brand"],
@@ -154,11 +154,11 @@ const TableList: React.FC = () => {
       dataIndex: ["parsedData", "count"],
       render: (_, record) => record.parsedData?.count || "-",
     },
-    {
-      title: "类型",
-      dataIndex: ["parsedData", "type"],
-      render: (_, record) => record.parsedData?.type || "-",
-    },
+    // {
+    //   title: "类型",
+    //   dataIndex: ["parsedData", "type"],
+    //   render: (_, record) => record.parsedData?.type || "-",
+    // },
     {
       title: "品牌",
       dataIndex: ["parsedData", "brand"],

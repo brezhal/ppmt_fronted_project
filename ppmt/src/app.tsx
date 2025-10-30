@@ -6,6 +6,7 @@ import { history, Link } from '@umijs/max';
 import React from 'react';
 import {
   Footer,
+  DocsButton,
 } from '@/components';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
@@ -35,7 +36,7 @@ export const layout: RunTimeLayoutConfig = ({
     collapsed: true,
     // 设置侧边栏默认收起
     siderMenuType: 'sub',
-    actionsRender: () => [],
+    actionsRender: () => [<DocsButton key="docs" />],
     footerRender: () => <Footer />,
     onPageChange: () => {
       // 移除登录检查逻辑
