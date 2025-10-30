@@ -49,7 +49,7 @@ QQ 群：1053502785（问题解答）
    | 协同模式    | 多设备/多人协同抢购       | 与具备 Root 的设备协同：统一切换、降低冲突；无 Root 端以低刷新配合。（联系群主开通，不收费） |
 
 协同模式示意：
-<video controls src="http://image.brezhal.xin/uploads/%E5%BE%AE%E4%BF%A1%E8%A7%86%E9%A2%91_20251030155426.mp4"></video>
+  <video controls src="/docs/1.mp4"></video>
 
   <div class="md-row">
     <img src="https://usercontent.hamibot.cn/690319e9b60be7cb62a903e8/微信图片_20251030155450.jpg" />
