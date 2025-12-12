@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { extractStoreName } from './extractStoreName';
 
 // 加密密钥
 const ENCRYPTION_KEY_MD5 = '1cf2c91930c4a46cf84bc65fd418a567dd70f2741596c569894e4085b7b07666';
@@ -70,6 +71,14 @@ export function decryptOrdersList(orders: any[]): any[] {
         } catch (parseError) {
           console.warn('解密后的数据不是有效的JSON:', parseError);
           parsedData = { raw: decryptedData };
+        }
+        
+        // 如果parsedData中有storeName字段，提取店铺名称
+        if (parsedData && typeof parsedData === 'object' && 'storeName' in parsedData) {
+          const originalStoreName = parsedData.storeName;
+          if (typeof originalStoreName === 'string') {
+            parsedData.storeName = extractStoreName(originalStoreName);
+          }
         }
         
         return {

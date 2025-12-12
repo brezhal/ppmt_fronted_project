@@ -48,6 +48,12 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: "店铺名称",
+      dataIndex: ["parsedData", "storeName"],
+      hideInSearch: true, // 隐藏搜索
+      render: (_, record) => record.parsedData?.storeName || "送到家",
+    },
+    {
       title: "商品名称",
       dataIndex: ["parsedData", "name"],
       hideInSearch: true, // 隐藏搜索
@@ -163,6 +169,11 @@ const TableList: React.FC = () => {
       title: "品牌",
       dataIndex: ["parsedData", "brand"],
       render: (_, record) => record.parsedData?.brand || "-",
+    },
+    {
+      title: "店铺名称",
+      dataIndex: ["parsedData", "storeName"],
+      render: (_, record) => record.parsedData?.storeName || "送到家",
     },
     {
       title: "创建时间",
