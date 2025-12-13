@@ -213,7 +213,7 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <div style={{ marginBottom: "16px", paddingLeft: "16px", paddingRight: "16px" }}>
-        数据仅供参考，有些统计不到，-的数据表示买到，但没统计到名称。2025-9-27日之后的数据大部分是正常的，之前的因统计问题丢失了
+        数据仅供参考，-的数据表示买到，但没统计到名称。
       </div>
       <ProTable<API.OrderListItem, API.PageParams>
         headerTitle="订单列表"

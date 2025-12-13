@@ -34,6 +34,14 @@ export default {
       logLevel: 'debug',
       secure: false, // 忽略SSL证书验证
     },
+    // 代理库存信息API请求
+    '/api/inventory/grab-logs': {
+      target: 'http://129.211.71.79:8000',
+      changeOrigin: true,
+      pathRewrite: { '^/api/inventory': '' },
+      logLevel: 'debug',
+      secure: false, // 忽略SSL证书验证
+    },
     // 代理其他API请求
     '/api/': {
       target: 'https://proapi.azurewebsites.net',

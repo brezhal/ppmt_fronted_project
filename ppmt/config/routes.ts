@@ -35,6 +35,12 @@ export default [
     component: './table-list',
   },
   {
+    name: 'list.inventory',
+    icon: 'database',
+    path: '/inventory',
+    component: './inventory',
+  },
+  {
     path: '/',
     redirect: '/list',
   },
