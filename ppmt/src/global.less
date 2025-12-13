@@ -77,6 +77,37 @@ body,
   overflow: hidden;
   display: block;
 }
+/* 菜单选中高亮改为蓝色 */
+.ant-menu-item-selected,
+.ant-menu-submenu-selected > .ant-menu-submenu-title {
+  background-color: #e6f7ff !important;
+  color: #1890ff !important;
+}
+
+.ant-menu-item-selected::after,
+.ant-menu-submenu-selected > .ant-menu-submenu-title::after {
+  border-right-color: #1890ff !important;
+}
+
+.ant-menu-item:hover,
+.ant-menu-submenu-title:hover {
+  background-color: #bae7ff !important;
+  color: #1890ff !important;
+}
+
+/* 顶部菜单选中样式 */
+.ant-pro-top-nav-header-menu .ant-menu-item-selected,
+.ant-pro-top-nav-header-menu .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  background-color: #e6f7ff !important;
+  color: #1890ff !important;
+}
+
+.ant-pro-top-nav-header-menu .ant-menu-item:hover,
+.ant-pro-top-nav-header-menu .ant-menu-submenu-title:hover {
+  background-color: #bae7ff !important;
+  color: #1890ff !important;
+}
+
 
 /* 移动端去除页面容器边距 */
 @media (max-width: 768px) {

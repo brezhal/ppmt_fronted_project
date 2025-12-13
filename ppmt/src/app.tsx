@@ -32,14 +32,20 @@ export const layout: RunTimeLayoutConfig = ({
   setInitialState,
 }) => {
   return {
-    // 设置侧边栏默认折叠
-    collapsed: true,
-    // 设置侧边栏默认收起
-    siderMenuType: 'sub',
     actionsRender: () => [<DocsButton key="docs" />],
     footerRender: () => <Footer />,
     onPageChange: () => {
       // 移除登录检查逻辑
+    },
+    // 处理菜单折叠收起事件
+    onCollapse: (collapsed: boolean) => {
+      setInitialState((preInitialState) => ({
+        ...preInitialState,
+        settings: {
+          ...preInitialState?.settings,
+          collapsed,
+        },
+      }));
     },
     bgLayoutImgList: [
       {
