@@ -1,6 +1,7 @@
 import { getInventoryList } from "@/services/inventory/api";
 import { PageContainer } from "@ant-design/pro-components";
-import { Card, Tag, Typography, Spin, List, Space } from "antd";
+import { Card, Tag, Typography, Spin, List, Space, Button } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 
 const { Text, Title } = Typography;
@@ -18,19 +19,21 @@ const Inventory: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
+  // 获取数据的函数
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const data = await getInventoryList();
+      setLogs(data || []);
+    } catch (error) {
+      console.error('获取库存信息失败:', error);
+      setLogs([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const data = await getInventoryList();
-        setLogs(data || []);
-      } catch (error) {
-        console.error('获取库存信息失败:', error);
-        setLogs([]);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
@@ -197,7 +200,19 @@ const Inventory: React.FC = () => {
   );
 
   return (
-    <PageContainer>
+    <PageContainer
+      extra={[
+        <Button
+          key="refresh"
+          type="primary"
+          icon={<ReloadOutlined />}
+          loading={loading}
+          onClick={fetchData}
+        >
+          刷新
+        </Button>,
+      ]}
+    >
       <Card>
         <div style={{ maxHeight: `calc(100vh - ${isMobile ? '300px' : '360px'})`, overflowY: 'auto' }}>
           {isMobile ? renderMobileView() : renderDesktopView()}
