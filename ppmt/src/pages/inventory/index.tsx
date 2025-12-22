@@ -6,16 +6,8 @@ import React, { useEffect, useState } from "react";
 
 const { Text, Title } = Typography;
 
-interface ParsedLog {
-  user: string;
-  product: string;
-  store: string;
-  time: string;
-  raw: string;
-}
-
 const Inventory: React.FC = () => {
-  const [logs, setLogs] = useState<string[]>([]);
+  const [logs, setLogs] = useState<API.InventoryLogItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -51,41 +43,6 @@ const Inventory: React.FC = () => {
     };
   }, []);
 
-  // 解析日志字符串
-  const parseLog = (log: string): ParsedLog => {
-    // 格式：用户名-商品名称-店铺位置 - 时间
-    const parts = log.split(' - ');
-    const time = parts.length > 1 ? parts[parts.length - 1] : '';
-    const beforeTime = parts.slice(0, -1).join(' - ');
-    
-    // 分割用户名、商品、店铺
-    const segments = beforeTime.split('-');
-    if (segments.length >= 3) {
-      return {
-        user: segments[0].trim(),
-        product: segments.slice(1, -1).join('-').trim(),
-        store: segments[segments.length - 1].trim(),
-        time: time.trim(),
-        raw: log,
-      };
-    } else if (segments.length === 2) {
-      return {
-        user: segments[0].trim(),
-        product: segments[1].trim(),
-        store: '',
-        time: time.trim(),
-        raw: log,
-      };
-    }
-    
-    return {
-      user: '',
-      product: beforeTime,
-      store: '',
-      time: time.trim(),
-      raw: log,
-    };
-  };
 
   if (loading) {
     return (
@@ -104,7 +61,6 @@ const Inventory: React.FC = () => {
     <List
       dataSource={logs}
       renderItem={(log, index) => {
-        const parsed = parseLog(log);
         return (
           <List.Item
             key={index}
@@ -121,27 +77,27 @@ const Inventory: React.FC = () => {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%', flexWrap: 'wrap' }}>
-              {parsed.user && (
+              {log.nick_name && (
                 <>
-                  <Tag color="blue" style={{ margin: 0 }}>{parsed.user}</Tag>
+                  <Tag color="blue" style={{ margin: 0 }}>{log.nick_name}</Tag>
                   <Text style={{ color: '#999' }}>-</Text>
                 </>
               )}
-              {parsed.product && (
+              {log.goods_name && (
                 <>
-                  <Text style={{ fontSize: '14px' }}>{parsed.product}</Text>
+                  <Text style={{ fontSize: '14px' }}>{log.goods_name}</Text>
                   <Text style={{ color: '#999' }}>-</Text>
                 </>
               )}
-              {parsed.store && (
+              {log.take_method && (
                 <>
-                  <Tag color="green" style={{ margin: 0 }}>{parsed.store}</Tag>
+                  <Tag color="green" style={{ margin: 0 }}>{log.take_method}</Tag>
                   <Text style={{ color: '#999' }}>-</Text>
                 </>
               )}
-              {parsed.time && (
+              {log.created_at && (
                 <Tag color="orange" style={{ margin: 0, fontSize: '12px' }}>
-                  {parsed.time}
+                  {log.created_at}
                 </Tag>
               )}
             </div>
@@ -155,7 +111,6 @@ const Inventory: React.FC = () => {
   const renderMobileView = () => (
     <Space direction="vertical" size="middle" style={{ width: '100%' }}>
       {logs.map((log, index) => {
-        const parsed = parseLog(log);
         return (
           <Card
             key={index}
@@ -166,29 +121,29 @@ const Inventory: React.FC = () => {
             }}
           >
             <Space direction="vertical" size="small" style={{ width: '100%' }}>
-              {parsed.user && (
+              {log.nick_name && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <Tag color="blue" style={{ margin: 0 }}>用户</Tag>
-                  <Text strong style={{ fontSize: '14px' }}>{parsed.user}</Text>
+                  <Text strong style={{ fontSize: '14px' }}>{log.nick_name}</Text>
                 </div>
               )}
-              {parsed.product && (
+              {log.goods_name && (
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                   <Tag color="purple" style={{ margin: 0 }}>商品</Tag>
-                  <Text style={{ fontSize: '14px', flex: 1 }}>{parsed.product}</Text>
+                  <Text style={{ fontSize: '14px', flex: 1 }}>{log.goods_name}</Text>
                 </div>
               )}
-              {parsed.store && (
+              {log.take_method && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Tag color="green" style={{ margin: 0 }}>店铺</Tag>
-                  <Text style={{ fontSize: '14px' }}>{parsed.store}</Text>
+                  <Tag color="green" style={{ margin: 0 }}>取货方式</Tag>
+                  <Text style={{ fontSize: '14px' }}>{log.take_method}</Text>
                 </div>
               )}
-              {parsed.time && (
+              {log.created_at && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <Tag color="orange" style={{ margin: 0 }}>时间</Tag>
                   <Text style={{ fontSize: '13px' }}>
-                    {parsed.time}
+                    {log.created_at}
                   </Text>
                 </div>
               )}

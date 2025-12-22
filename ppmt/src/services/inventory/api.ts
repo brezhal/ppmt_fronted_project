@@ -2,12 +2,16 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 获取库存信息列表 GET /api/inventory/grab-logs */
+/** 获取库存信息列表 GET /api/inventory/query-grab-logs */
 export async function getInventoryList(
   options?: { [key: string]: any },
 ) {
-  const response = await request<any>('/api/inventory/grab-logs', {
+  const response = await request<API.InventoryList>('/api/inventory/query-grab-logs', {
     method: 'GET',
+    params: {
+      source: '超线程',
+      status: 0,
+    },
     headers: {
       'Accept': '*/*',
       'Accept-Encoding': 'gzip, deflate, br',
@@ -18,11 +22,9 @@ export async function getInventoryList(
   });
 
   // 处理数据格式：提取logs数组
-  let logs: string[] = [];
+  let logs: API.InventoryLogItem[] = [];
   if (response?.logs && Array.isArray(response.logs)) {
     logs = response.logs;
-  } else if (Array.isArray(response)) {
-    logs = response;
   } else if (response?.data?.logs && Array.isArray(response.data.logs)) {
     logs = response.data.logs;
   }

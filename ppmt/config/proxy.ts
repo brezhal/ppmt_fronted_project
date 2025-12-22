@@ -35,8 +35,8 @@ export default {
       secure: false, // 忽略SSL证书验证
     },
     // 代理库存信息API请求
-    '/api/inventory/grab-logs': {
-      target: 'http://129.211.71.79:8000',
+    '/api/inventory/query-grab-logs': {
+      target: 'http://8.140.219.211:8000',
       changeOrigin: true,
       pathRewrite: { '^/api/inventory': '' },
       logLevel: 'debug',

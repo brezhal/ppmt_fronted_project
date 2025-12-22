@@ -2,18 +2,17 @@
 /* eslint-disable */
 
 declare namespace API {
-  type InventoryItem = {
-    id?: number;
-    inventoryInfo?: string; // 库存信息
-    createdAt?: string;
-    updatedAt?: string;
-    [key: string]: any; // 允许其他字段
+  type InventoryLogItem = {
+    goods_name?: string; // 商品名称
+    take_method?: string; // 取货方式
+    nick_name?: string; // 用户昵称
+    created_at?: string; // 创建时间
   };
 
   type InventoryList = {
-    status?: boolean;
-    message?: string;
-    data?: InventoryItem[] | any; // 接口返回的数据可能是数组或其他格式
+    logs?: InventoryLogItem[]; // 日志列表
+    top_goods?: any[]; // 热门商品
+    total_logs?: number; // 总日志数
   };
 }
 
