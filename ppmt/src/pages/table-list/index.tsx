@@ -27,6 +27,20 @@ const TableList: React.FC = () => {
    * */
   const intl = useIntl();
 
+  // 格式化价格：处理 ¥¥1656 格式，显示为 ¥1656
+  const formatPrice = (price: string | undefined): string => {
+    if (!price || price === "-") return "-";
+    // 如果以 ¥¥ 开头，替换为 ¥
+    return price.replace(/^¥¥/, "¥");
+  };
+
+  // 格式化数量：处理 xx24 格式，显示为 x24
+  const formatCount = (count: string | undefined): string => {
+    if (!count || count === "-") return "-";
+    // 如果以 xx 开头，替换为 x
+    return count.replace(/^xx/, "x");
+  };
+
   // 表格显示的列定义
   const columns: ProColumns<API.OrderListItem>[] = [
     {
@@ -63,13 +77,13 @@ const TableList: React.FC = () => {
       title: "价格",
       dataIndex: ["parsedData", "price"],
       hideInSearch: true, // 隐藏搜索
-      render: (_, record) => record.parsedData?.price || "-",
+      render: (_, record) => formatPrice(record.parsedData?.price),
     },
     {
       title: "数量",
       dataIndex: ["parsedData", "count"],
       hideInSearch: true, // 隐藏搜索
-      render: (_, record) => record.parsedData?.count || "-",
+      render: (_, record) => formatCount(record.parsedData?.count),
     },
     // {
     //   title: "类型",
@@ -153,12 +167,12 @@ const TableList: React.FC = () => {
     {
       title: "价格",
       dataIndex: ["parsedData", "price"],
-      render: (_, record) => record.parsedData?.price || "-",
+      render: (_, record) => formatPrice(record.parsedData?.price),
     },
     {
       title: "数量",
       dataIndex: ["parsedData", "count"],
-      render: (_, record) => record.parsedData?.count || "-",
+      render: (_, record) => formatCount(record.parsedData?.count),
     },
     // {
     //   title: "类型",
