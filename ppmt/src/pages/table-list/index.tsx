@@ -27,18 +27,18 @@ const TableList: React.FC = () => {
    * */
   const intl = useIntl();
 
-  // 格式化价格：处理 ¥¥1656 格式，显示为 ¥1656
+  // 格式化价格：处理 ¥¥1656、¥¥¥1188 等格式，显示为 ¥1656、¥1188
   const formatPrice = (price: string | undefined): string => {
     if (!price || price === "-") return "-";
-    // 如果以 ¥¥ 开头，替换为 ¥
-    return price.replace(/^¥¥/, "¥");
+    // 如果以多个 ¥ 开头，替换为单个 ¥
+    return price.replace(/^¥+/, "¥");
   };
 
-  // 格式化数量：处理 xx24 格式，显示为 x24
+  // 格式化数量：处理 xx24、xxx12 等格式，显示为 x24、x12
   const formatCount = (count: string | undefined): string => {
     if (!count || count === "-") return "-";
-    // 如果以 xx 开头，替换为 x
-    return count.replace(/^xx/, "x");
+    // 如果以多个 x 开头，替换为单个 x
+    return count.replace(/^x+/, "x");
   };
 
   // 表格显示的列定义
